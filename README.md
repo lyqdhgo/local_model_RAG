@@ -10,7 +10,7 @@
 ![LangChain](https://img.shields.io/badge/LangChain-langchain--core%20%7C%20community%20%7C%20ollama-1C3C3C?logo=langchain&logoColor=white)
 ![Ollama](https://img.shields.io/badge/Ollama-qwen3%3A8b-000000?logo=ollama&logoColor=white)
 ![OpenAI SDK](https://img.shields.io/badge/OpenAI%20SDK-compatible-412991?logo=openai&logoColor=white)
-![License](https://img.shields.io/badge/License-学习项目%2F无-lightgrey)
+![License](https://img.shields.io/badge/License-MIT-3DA639)
 
 [这个仓库是什么](#这个仓库是什么) · [学习地图](#学习地图) · [环境准备](#环境准备) · [怎么跑](#怎么跑) · [目录速查](#目录速查) · [已知问题](#已知问题与注意事项)
 
