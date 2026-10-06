@@ -8,7 +8,7 @@ completion = client.chat.completions.create(
     model="qwen3:8b",
     messages=[
         {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": "你是谁，能做什么？"},
+        {"role": "user", "content": "你是谁，什么模型，能做什么？"},
     ],
     stream=True
 )
