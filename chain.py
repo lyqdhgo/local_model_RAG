@@ -24,3 +24,7 @@ chain = chat_prompt_template | model
 # 通过链去调用invoke或stream
 res = chain.invoke({"history": history_data})
 print(res.content)
+
+# 通过stream流式输出
+for chunk in chain.stream({"history": history_data}):
+    print(chunk.content, end="", flush=True)
