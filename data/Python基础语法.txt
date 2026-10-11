@@ -1,0 +1,2070 @@
+================================================================================
+                        Python 基础语法
+                      —— 入门速查笔记（建议配套 Python 3.8+ 使用）
+================================================================================
+
+目 录
+--------------------------------------------------------------------------------
+  第 1 章  起步与环境
+  第 2 章  注释与代码规范
+  第 3 章  变量与标识符
+  第 4 章  基本数据类型
+  第 5 章  运算符
+  第 6 章  输入与输出
+  第 7 章  字符串操作
+  第 8 章  流程控制（if / for / while）
+  第 9 章  四大容器：列表 / 元组 / 字典 / 集合
+ 第 10 章  函数
+ 第 11 章  作用域与高级函数特性
+ 第 12 章  异常处理
+ 第 13 章  文件操作
+ 第 14 章  模块与包
+ 第 15 章  面向对象基础
+ 第 16 章  常用内置函数速查
+ 第 17 章  常见易错点
+ 第 18 章  编码规范（PEP 8 要点）
+--------------------------------------------------------------------------------
+
+
+================================================================================
+第 1 章  起步与环境
+================================================================================
+
+【1.1 运行 Python 的三种方式】
+
+  1) 交互式解释器（REPL）—— 边写边看结果
+       命令行输入：python        （Windows 有时是 py）
+       退出：exit()  或  Ctrl+Z 回车（Windows）/ Ctrl+D（macOS、Linux）
+
+  2) 脚本文件 —— 正式写法
+       新建 hello.py，内容：
+           print("Hello, Python")
+       命令行运行：python hello.py
+
+  3) IDE / 编辑器
+       PyCharm、VS Code（装 Python 扩展）、Jupyter Notebook
+
+【1.2 检查版本】
+
+       python --version
+       python3 --version        # macOS / Linux 常见写法
+
+【1.3 第一个程序】
+
+       # hello.py
+       print("Hello, Python")        # 输出：Hello, Python
+
+   说明：print() 是内置函数，作用是往控制台输出内容。
+
+
+================================================================================
+第 2 章  注释与代码规范
+================================================================================
+
+【2.1 单行注释】以 # 开头，从 # 到行尾都是注释
+
+       # 这是单行注释
+       age = 18        # 行尾注释也可以
+
+【2.2 多行注释 / 文档字符串】用三个引号包裹（''' 或 """）
+
+       """
+       这是多行注释
+       可以写很多行
+       """
+
+   提示：写在函数、类、模块开头的三引号字符串叫"文档字符串（docstring）"，
+        可以用 help(函数名) 查看。
+
+【2.3 缩进 —— Python 最核心的语法特征】
+
+   Python 不用大括号 {} 划分代码块，而是靠「缩进」。
+
+        if True:
+            print("这行属于 if 块")     # 4 个空格缩进
+        print("这行不属于 if")           # 不缩进，回到外层
+
+   规则：
+       - 同一个代码块内的缩进必须完全一致
+       - 官方推荐用 4 个空格（不要用 Tab，也不要混用）
+       - 缩进错误会报 IndentationError
+
+【2.4 换行与续行】
+
+   # 一行太长，用反斜杠 \ 续行
+   total = 1 + 2 + \
+           3 + 4
+
+   # 在 ()、[]、{} 内部换行，不需要反斜杠
+   nums = [
+       1, 2, 3,
+       4, 5, 6,
+   ]
+
+【2.5 一行写多条语句】用分号 ; 分隔（不推荐，可读性差）
+
+       a = 1; b = 2; print(a + b)
+
+【2.6 空行】Python 不把空行当语法，但它是代码结构的一部分
+
+       - 函数之间、类之间空 1~2 行
+       - 函数内部逻辑段落之间空 1 行
+
+
+================================================================================
+第 3 章  变量与标识符
+================================================================================
+
+【3.1 变量的本质】变量是"名字 → 值的引用"，不需要声明类型
+
+       name = "Alice"      # 字符串
+       age = 25            # 整数
+       height = 1.68       # 浮点数
+       is_student = True   # 布尔值
+
+   Python 是「动态类型」语言：变量类型由赋的值决定，可以中途改变。
+
+       x = 10          # 现在是 int
+       x = "ten"       # 现在变成 str，完全合法
+
+【3.2 命名规则】
+
+   合法：
+       - 只能包含 字母、数字、下划线
+       - 不能以数字开头
+       - 区分大小写（name 和 Name 是两个变量）
+       - 不能使用 Python 关键字
+
+   合法示例：
+       age = 25
+       user_name = "Alice"
+       _total = 100
+       MAX_SIZE = 1024
+       StudentInfo = None
+       __private = None
+
+   非法示例：
+       2nd_place = "silver"     # 错误：数字开头
+       user-name = "Bob"        # 错误：连字符
+       class = "Math"           # 错误：关键字
+       $price = 9.99            # 错误：特殊字符
+
+【3.3 命名惯例（约定，非强制）】
+
+       name             普通变量：小写 + 下划线
+       user_name        多个单词用下划线连接（snake_case）
+       MAX_SIZE         常量：全大写
+       calculate_area   函数名：动词 + 名词
+       StudentInfo      类名：首字母大写（PascalCase）
+       _internal        单下划线开头：内部使用
+       __private        双下划线开头：名称修饰，有特殊含义
+
+【3.4 查看与删除变量】
+
+       x = 10
+       print(type(x))      # <class 'int'>
+       del x               # 删除变量引用
+       print(x)            # 报错 NameError
+
+【3.5 多重赋值与交换】
+
+       a, b = 1, 2                 # 分别赋值
+       a = b = c = 0               # 同一个值赋给多个变量
+
+       a, b = b, a                 # 交换两个变量的值（无需临时变量）
+       print(a, b)                 # 2 1
+
+       x, y, *rest = [1, 2, 3, 4]  # 星号解包
+       print(rest)                 # [3, 4]
+
+【3.6 Python 关键字（不能用作变量名）】
+
+       False    None     True     and      as       assert   async
+       await    break    class    continue def      del      elif
+       else     except   finally  for      from     global   if
+       import   in       is       lambda   nonlocal not      or
+       pass     raise    return   try      while    with     yield
+
+   查看当前版本全部关键字：
+
+       import keyword
+       print(keyword.kwlist)
+
+
+================================================================================
+第 4 章  基本数据类型
+================================================================================
+
+【4.1 类型总览】
+
+   类型        名称      示例                 可变性    说明
+   ----------------------------------------------------------------------
+   int        整数      10, -3, 0b1010       不可变    任意精度，不会溢出
+   float      浮点数    3.14, 1.5e-5         不可变    有精度误差
+   bool       布尔      True, False          不可变    本质是 int 的子类
+   str        字符串    "hello"              不可变    文本
+   NoneType   空值      None                 不可变    表示"无"
+   list       列表      [1, 2, 3]            可变      有序，可增删改
+   tuple      元组      (1, 2, 3)            不可变    有序，不能改
+   dict       字典      {"a": 1}             可变      键值对
+   set        集合      {1, 2, 3}            可变      无序，元素唯一
+
+【4.2 整数 int】
+
+       a = 10
+       b = -3
+       c = 0b1010      # 二进制 = 10
+       d = 0o17        # 八进制 = 15
+       e = 0x1F        # 十六进制 = 31
+       f = 10_000_000  # 下划线分隔，便于阅读（值仍是 10000000）
+
+   注意：Python 3 的 int 没有大小限制（不像 C/Java 会溢出）。
+
+       print(2 ** 100)    # 1267650600228229401496703205376
+
+【4.3 浮点数 float】
+
+       x = 3.14
+       y = 1.5e-5      # 科学计数法 = 0.000015
+
+   浮点数精度陷阱（必记）：
+
+       print(0.1 + 0.2)                # 0.30000000000000004
+       print(0.1 + 0.2 == 0.3)         # False  ← 不要用 == 比较浮点数
+
+   # 正确做法：用 math.isclose() 或 decimal.Decimal
+       import math
+       print(math.isclose(0.1 + 0.2, 0.3))     # True
+
+       from decimal import Decimal
+       print(Decimal("0.1") + Decimal("0.2"))  # 0.3（精确）
+
+【4.4 布尔值 bool】
+
+       t = True
+       f = False
+
+   注意：bool 是 int 的子类，True == 1，False == 0
+
+       print(True + 1)         # 2
+       print(True == 1)        # True
+
+   转为布尔时「假」的值（falsy）：
+       False、None、0、0.0、""、[]、()、{}、set()
+
+       print(bool(0), bool(""), bool([]))      # False False False
+       print(bool(1), bool("a"), bool([0]))    # True True True
+
+【4.5 空值 None】
+
+       result = None
+
+   用途：表示"没有值""尚未赋值"，注意：
+       - None 只能用 is / is not 判断，不要用 ==
+       - 函数的默认返回值就是 None
+
+       def f():
+           pass
+       print(f())          # None
+       print(result is None)      # True
+
+【4.6 类型转换】
+
+   int(x)      转整数        int("10") → 10      int(3.9) → 3（截断）
+   float(x)    转浮点数      float("3.14") → 3.14
+   str(x)      转字符串      str(123) → "123"
+   bool(x)     转布尔        bool(0) → False
+   list(x)     转列表        list("abc") → ['a','b','c']
+   tuple(x)    转元组        tuple([1,2]) → (1,2)
+   set(x)      转集合        set([1,1,2]) → {1,2}
+
+   转换失败会抛异常：
+
+       int("abc")      # ValueError: invalid literal for int()
+
+   安全转换示例：
+
+       s = input("请输入年龄：")
+       try:
+           age = int(s)
+       except ValueError:
+           print("输入的不是数字")
+
+【4.7 查看类型与判断类型】
+
+       x = 10
+       print(type(x))              # <class 'int'>
+       print(isinstance(x, int))   # True（推荐用 isinstance，支持继承）
+
+
+================================================================================
+第 5 章  运算符
+================================================================================
+
+【5.1 算术运算符】
+
+   运算符   名称        示例        结果
+   ----------------------------------------------------
+   +        加          7 + 2       9
+   -        减          7 - 2       5
+   *        乘          7 * 2       14
+   /        除          7 / 2       3.5      ← 结果一定是 float
+   //       整除        7 // 2      3        ← 向下取整
+   %        取模        7 % 2       1
+   **       幂          7 ** 2      49
+
+   强调：
+       print(7 / 2)        # 3.5   除法总是返回 float
+       print(7 // 2)       # 3     地板除，向下取整
+       print(-7 // 2)      # -4    注意是往小的方向取整！
+       print(-7 % 2)       # 1     取模结果符号跟除数一致
+
+【5.2 比较运算符】返回 bool
+
+   ==   等于
+   !=   不等于
+   >    大于
+   <    小于
+   >=   大于等于
+   <=   小于等于
+
+       print(3 == 3.0)     # True（值相等）
+       print(3 is 3.0)     # False（不是同一个对象）
+
+【5.3 逻辑运算符】
+
+   and   与：都真才真，短路求值
+   or    或：一真即真，短路求值
+   not   非：取反
+
+       x = True
+       y = False
+       print(x and y)      # False
+       print(x or y)       # True
+       print(not x)        # False
+
+   短路特性（重要）：
+
+       # and：左边为假，右边不执行
+       result = (0 and 10 / 0)     # 返回 0，不会报除零错误
+
+       # or：左边为真，右边不执行
+       name = "" or "默认名"
+       print(name)                 # "默认名"
+
+   实际用法：给默认值
+
+       value = user_input or "默认值"
+
+【5.4 身份运算符 is / is not】
+
+   比较的是「是否是同一个对象」（内存地址），不是值是否相等。
+
+       a = [1, 2, 3]
+       b = [1, 2, 3]
+       c = a
+
+       print(a == b)       # True   值相等
+       print(a is b)       # False  不是同一个对象
+       print(a is c)       # True   同一个对象
+
+   唯一推荐用 is 的场景：判断 None
+
+       if x is None:       # 正确
+       if x == None:       # 不推荐
+
+【5.5 成员运算符 in / not in】
+
+       print("a" in "apple")       # True
+       print(3 in [1, 2, 3])       # True
+       print("k" in {"k": 1})      # True   判断的是键
+
+【5.6 赋值运算符】
+
+   =     赋值            a = 1
+   +=    加后赋值        a += 1    等价 a = a + 1
+   -=    减后赋值        a -= 1
+   *=    乘后赋值        a *= 2
+   /=    除后赋值        a /= 2
+   //=   整除后赋值      a //= 2
+   %=    取模后赋值      a %= 2
+   **=   幂后赋值        a **= 2
+   &=    按位与后赋值
+   |=    按位或后赋值
+   ^=    按位异或后赋值
+   >>=   右移后赋值
+   <<=   左移后赋值
+
+   注意：+= 对可变对象可能是原地修改
+
+       a = [1]
+       b = a
+       a += [2]        # 原地扩展
+       print(b)        # [1, 2]   b 也跟着变了
+
+       a = [1]
+       b = a
+       a = a + [2]     # 创建新列表
+       print(b)        # [1]       b 没变
+
+【5.7 位运算符】
+
+       a = 10      # 二进制 1010
+       b = 4       # 二进制 0100
+
+       print(a & b)    # 0    按位与
+       print(a | b)    # 14   按位或
+       print(a ^ b)    # 14   按位异或
+       print(~a)       # -11  按位取反
+       print(a << 1)   # 20   左移 1 位（相当于 ×2）
+       print(a >> 1)   # 5    右移 1 位（相当于 ÷2）
+
+【5.8 运算符优先级（从高到低，节选）】
+
+       **                     幂
+       +x, -x, ~x             一元
+       *, /, //, %            乘除
+       +, -                   加减
+       <<, >>                 移位
+       &                      按位与
+       ^                      按位异或
+       |                      按位或
+       ==, !=, >, <, >=, <=   比较
+       not                    逻辑非
+       and                    逻辑与
+       or                     逻辑或
+
+   原则：不确定就加括号。括号永远优先级最高。
+
+
+================================================================================
+第 6 章  输入与输出
+================================================================================
+
+【6.1 输出 print()】
+
+       print("Hello")                  # Hello
+       print("a", "b", "c")            # a b c      （默认空格分隔）
+       print("a", "b", sep="-")        # a-b        （自定义分隔符）
+       print("hello", end="")          # 不换行（默认 end="\n"）
+       print("world")                  # 接在上面输出 helloworld
+
+   常用参数：
+       sep      多个参数之间的分隔符，默认 " "
+       end      结尾字符，默认 "\n"
+       file     输出目标，默认 sys.stdout
+
+【6.2 格式化输出 —— 三种方式】
+
+   方式一：f-string（Python 3.6+，**强烈推荐**）
+
+       name = "Alice"
+       age = 25
+       print(f"我叫{name}，今年{age}岁")           # 我叫Alice，今年25岁
+       print(f"{age + 1}")                         # 26（可直接放表达式）
+       print(f"{3.14159:.2f}")                     # 3.14（保留 2 位小数）
+       print(f"{255:08b}")                         # 11111111（二进制补零）
+       print(f"{0.256:.1%}")                       # 25.6%（百分比）
+       print(f"{name:>10}")                        # 右对齐，宽 10
+       print(f"{name:<10}|")                       # 左对齐
+       print(f"{name:^10}|")                       # 居中
+       print(f"{1000000:,}")                       # 1,000,000（千分位）
+
+   方式二：str.format()
+
+       print("我叫{}，今年{}岁".format(name, age))
+       print("我叫{0}，今年{1}岁".format(name, age))
+       print("我叫{n}，今年{a}岁".format(n=name, a=age))
+       print("{:.2f}".format(3.14159))             # 3.14
+
+   方式三：% 占位符（老式，了解即可）
+
+       print("我叫%s，今年%d岁" % (name, age))
+       print("圆周率 %.2f" % 3.14159)
+
+   常用占位符：%s 字符串 / %d 整数 / %f 浮点数 / %x 十六进制
+
+【6.3 输入 input()】
+
+       name = input("请输入姓名：")
+       print("你好，" + name)
+
+   关键点：
+       - input() 的返回值**永远是字符串 str**
+       - 需要数字必须手动转换
+
+       age = int(input("请输入年龄："))            # 转整数
+       height = float(input("请输入身高："))       # 转浮点数
+
+   安全写法：
+
+       try:
+           age = int(input("请输入年龄："))
+       except ValueError:
+           print("请输入合法的数字")
+
+
+================================================================================
+第 7 章  字符串操作
+================================================================================
+
+【7.1 定义字符串】
+
+       s1 = 'hello'                # 单引号
+       s2 = "hello"                # 双引号（与单引号完全等价）
+       s3 = '''多行
+       字符串'''
+       s4 = """也可以
+       多行"""
+
+   引号选择技巧：字符串内部含单引号就用双引号包，反之亦然。
+
+       print("It's ok")
+       print('他说"你好"')
+
+【7.2 转义字符】
+
+       \n      换行
+       \t      制表符
+       \\      反斜杠本身
+       \'      单引号
+       \"      双引号
+       \r      回车
+
+       print("第一行\n第二行")
+
+   # 原始字符串 r""：不转义（写路径、正则时常用）
+
+       print(r"C:\new\test")       # C:\new\test（\n 不换行）
+
+【7.3 索引与切片】
+
+   索引从 0 开始；负数表示从右往左数（-1 是最后一个）。
+
+       s = "Python"
+       print(s[0])         # P
+       print(s[-1])        # n
+       print(s[2])         # t
+
+   切片语法：s[start:end:step]
+       - start 包含，end 不包含
+       - 都不写就是从头到尾
+       - step 为负数表示倒序
+
+       s = "0123456789"
+       print(s[0:3])       # 012
+       print(s[:3])        # 012        省略 start
+       print(s[3:])        # 3456789    省略 end
+       print(s[:])         # 0123456789 全部
+       print(s[::2])       # 02468      步长 2
+       print(s[::-1])      # 9876543210 反转字符串（高频用法）
+       print(s[-3:])       # 789        最后三个
+
+【7.4 字符串不可变】
+
+       s = "hello"
+       s[0] = "H"          # TypeError: 'str' object does not support item assignment
+
+   # 想要修改，只能新建：
+
+       s = "H" + s[1:]     # "Hello"
+
+【7.5 常用方法】
+
+   大小写相关：
+       s = "Hello World"
+       s.upper()               # "HELLO WORLD"
+       s.lower()               # "hello world"
+       s.capitalize()          # "Hello world"      首字母大写
+       s.title()               # "Hello World"      每个单词首字母大写
+       s.swapcase()            # "hELLO wORLD"
+
+   查找与判断：
+       s.find("World")         # 6      找到返回下标，找不到返回 -1
+       s.index("World")        # 6      找不到会抛 ValueError
+       s.count("l")            # 3      统计出现次数
+       s.startswith("Hello")   # True
+       s.endswith("World")     # True
+       "l" in s                # True
+
+   判断类（返回 bool）：
+       "abc".isalpha()         # True   全是字母
+       "123".isdigit()         # True   全是数字
+       "abc123".isalnum()      # True   字母或数字
+       "  ".isspace()          # True   全是空白
+       "Hello".isupper()       # False
+       "hello".islower()       # True
+
+   修改与清理（都返回新字符串）：
+       s.strip()               # 去首尾空白
+       s.lstrip()              # 只去左边
+       s.rstrip()              # 只去右边
+       "xxhixx".strip("x")     # "hi"      去指定字符
+       s.replace("l", "L")     # "HeLLo WorLd"
+       s.replace("l", "L", 1)  # "HeLlo World"   只替换 1 次
+
+   分割与连接：
+       "a,b,c".split(",")          # ['a', 'b', 'c']
+       "a b c".split()             # ['a', 'b', 'c']   默认按空白分割
+       "a,b,c".split(",", 1)       # ['a', 'b,c']      最多切 1 次
+       "-".join(["a", "b"])        # "a-b"
+       "hello".splitlines()        # 按行分割
+
+   对齐与填充：
+       "hi".center(6, "*")     # "**hi**"
+       "hi".ljust(6, "-")      # "hi----"
+       "hi".rjust(6, "-")      # "----hi"
+       "42".zfill(5)           # "00042"
+
+   编码转换：
+       "中文".encode("utf-8")      # b'\xe4\xb8\xad\xe6\x96\x87'
+       b'\xe4\xb8\xad'.decode("utf-8")   # '中'
+
+【7.6 字符串拼接】
+
+       # 少量拼接：用 +
+       a = "Hello" + " " + "World"
+
+       # 大量拼接：用 join（性能远好于 +）
+       parts = ["a", "b", "c"]
+       result = "".join(parts)         # "abc"
+
+       # 字面量相邻自动拼接
+       s = "Hello" "World"             # "HelloWorld"
+
+【7.7 len() 与遍历】
+
+       s = "Python"
+       print(len(s))           # 6
+
+       for ch in s:
+           print(ch)           # 逐个字符输出
+
+       # 带下标遍历
+       for i, ch in enumerate(s):
+           print(i, ch)
+
+
+================================================================================
+第 8 章  流程控制
+================================================================================
+
+【8.1 if 条件判断】
+
+   基本形式：
+
+       age = 18
+       if age >= 18:
+           print("成年")
+       else:
+           print("未成年")
+
+   if - elif - else（多分支）：
+
+       score = 85
+       if score >= 90:
+           print("A")
+       elif score >= 80:
+           print("B")
+       elif score >= 70:
+           print("C")
+       else:
+           print("D")
+
+   要点：
+       - 条件后面必须有冒号 :
+       - 每个分支内的缩进必须一致
+       - elif 可以有很多个，else 最多一个
+       - 判断顺序从上到下，命中即停
+
+【8.2 条件表达式（三元运算符）】
+
+       age = 20
+       msg = "成年" if age >= 18 else "未成年"
+       print(msg)
+
+   格式：  值1 if 条件 else 值2
+
+【8.3 真值判断的简写】
+
+       # 判断非空 / 非零，直接写变量名即可
+       name = "Alice"
+       if name:                # 等价于 if len(name) > 0
+           print("有名字")
+
+       items = []
+       if not items:           # 等价于 if len(items) == 0
+           print("列表为空")
+
+【8.4 while 循环】
+
+       i = 1
+       while i <= 5:
+           print(i)
+           i += 1              # 千万别忘记更新条件，否则死循环
+
+   while - else（循环正常结束才执行 else，被 break 打断则不执行）：
+
+       i = 0
+       while i < 3:
+           print(i)
+           i += 1
+       else:
+           print("循环正常结束")
+
+【8.5 for 循环】
+
+   Python 的 for 是「遍历」循环，不是 C 那种计数循环。
+
+       # 遍历列表
+       for fruit in ["苹果", "香蕉", "橘子"]:
+           print(fruit)
+
+       # 遍历字符串
+       for ch in "abc":
+           print(ch)
+
+       # 遍历字典
+       d = {"a": 1, "b": 2}
+       for k in d:
+           print(k)                # 遍历键
+       for k, v in d.items():
+           print(k, v)             # 遍历键值对
+
+【8.6 range() 生成数字序列】
+
+       range(5)            # 0,1,2,3,4           （start 默认 0）
+       range(1, 5)         # 1,2,3,4             （不含 5）
+       range(1, 10, 2)     # 1,3,5,7,9           （步长 2）
+       range(5, 0, -1)     # 5,4,3,2,1           （倒序）
+
+       for i in range(5):
+           print(i)
+
+       # 注意：range 返回的是"惰性对象"，不是列表
+       print(list(range(3)))       # [0, 1, 2]
+
+【8.7 循环控制：break / continue / pass】
+
+       # break：立即跳出整个循环
+       for i in range(10):
+           if i == 3:
+               break
+           print(i)                # 输出 0 1 2
+
+       # continue：跳过本次，进入下一次
+       for i in range(5):
+           if i == 2:
+               continue
+           print(i)                # 输出 0 1 3 4
+
+       # pass：占位，什么都不做
+       if True:
+           pass                    # 语法需要语句但暂时不写逻辑
+
+【8.8 for - else】
+
+       for i in range(3):
+           print(i)
+       else:
+           print("遍历完成")       # 没被 break 就会执行
+
+【8.9 嵌套循环】
+
+       for i in range(1, 4):
+           for j in range(1, 4):
+               print(f"{i}×{j}={i*j}", end="  ")
+           print()                 # 每行结束换行
+
+【8.10 enumerate() 与 zip()】
+
+       # enumerate：同时拿到下标和值
+       for i, v in enumerate(["a", "b", "c"], start=1):
+           print(i, v)             # 1 a / 2 b / 3 c
+
+       # zip：并行遍历多个序列
+       names = ["张三", "李四"]
+       ages = [20, 25]
+       for n, a in zip(names, ages):
+           print(n, a)
+
+       # 解包成列表
+       print(list(zip(names, ages)))   # [('张三', 20), ('李四', 25)]
+
+   注意：zip 以最短的序列为准。
+
+
+================================================================================
+第 9 章  四大容器
+================================================================================
+
+--------------------------------------------------------------------------------
+9.1 列表 list —— 有序、可变
+--------------------------------------------------------------------------------
+
+【创建】
+
+       a = [1, 2, 3]
+       b = list("abc")         # ['a', 'b', 'c']
+       c = [0] * 5             # [0, 0, 0, 0, 0]
+       d = []                  # 空列表
+
+【索引与切片】规则同字符串
+
+       a = [10, 20, 30, 40, 50]
+       print(a[0])             # 10
+       print(a[-1])            # 50
+       print(a[1:3])           # [20, 30]   ★ 切片返回新列表
+       print(a[::-1])          # [50, 40, 30, 20, 10]
+
+【切片赋值：与字符串不同，列表支持】
+
+       a = [1, 2, 3]
+       a[0] = 100              # [100, 2, 3]
+       a[0:2] = [7, 8, 9]      # [7, 8, 9, 3]   长度可以不同
+
+【增】
+
+       a = [1, 2, 3]
+       a.append(4)             # 尾部加一个元素     → [1,2,3,4]
+       a.insert(0, 0)          # 指定位置插入       → [0,1,2,3,4]
+       a.extend([5, 6])        # 尾部追加多个       → [0,1,2,3,4,5,6]
+       a + [7]                 # 返回新列表，不改原列表
+
+   注意 append vs extend：
+
+       x = [1, 2]
+       x.append([3, 4])        # [1, 2, [3, 4]]  把整个列表当一个元素
+       y = [1, 2]
+       y.extend([3, 4])        # [1, 2, 3, 4]    展开追加
+
+【删】
+
+       a = [1, 2, 3, 2]
+       a.remove(2)             # 删除第一个值为 2 的元素  → [1,3,2]
+       a.pop()                 # 删除并返回最后一个       → 返回 2，a=[1,3]
+       a.pop(0)                # 删除并返回指定下标
+       del a[0]                # 按下标删除
+       a.clear()               # 清空所有元素
+
+【改】
+
+       a = [1, 2, 3]
+       a[0] = 100              # 按下标修改
+
+【查】
+
+       a = [10, 20, 30]
+       print(a.index(20))      # 1        返回下标，找不到报 ValueError
+       print(a.count(20))      # 1        统计出现次数
+       print(20 in a)          # True
+
+【排序与反转】
+
+       a = [3, 1, 2]
+       a.sort()                # 原地升序     → [1,2,3]
+       a.sort(reverse=True)    # 原地降序
+       a.reverse()             # 原地反转
+
+       b = sorted(a)           # 返回新列表，原列表不变（内置函数）
+
+   自定义排序：
+
+       words = ["banana", "apple", "cherry"]
+       words.sort(key=len)                     # 按长度排序
+       print(words)                            # ['apple', 'banana', 'cherry']
+
+       students = [("张三", 20), ("李四", 18)]
+       students.sort(key=lambda x: x[1])       # 按年龄排序
+       students.sort(key=lambda x: x[1], reverse=True)     # 按年龄降序
+
+【列表推导式（重点，高频）】
+
+       # 基础：生成平方数
+       squares = [x * x for x in range(5)]
+       print(squares)                          # [0, 1, 4, 9, 16]
+
+       # 带条件过滤
+       evens = [x for x in range(10) if x % 2 == 0]
+       print(evens)                            # [0, 2, 4, 6, 8]
+
+       # 带条件表达式
+       labels = ["偶" if x % 2 == 0 else "奇" for x in range(4)]
+       print(labels)                           # ['偶', '奇', '偶', '奇']
+
+       # 嵌套推导
+       matrix = [[i * j for j in range(3)] for i in range(3)]
+       print(matrix)                           # [[0,0,0], [0,1,2], [0,2,4]]
+
+【其他常用操作】
+
+       a = [1, 2, 3]
+       print(len(a))           # 3        长度
+       print(sum(a))           # 6        求和
+       print(max(a), min(a))   # 3 1      最大最小
+       print(a * 2)            # [1,2,3,1,2,3]  重复
+
+       # 拷贝（重点：直接赋值是引用！）
+       b = a                   # 引用，改 b 会影响 a
+       c = a.copy()            # 浅拷贝
+       d = a[:]                # 浅拷贝
+       import copy
+       e = copy.deepcopy(a)    # 深拷贝（嵌套结构必须用这个）
+
+【遍历列表】
+
+       for x in [1, 2, 3]:
+           print(x)
+
+       for i in range(len(a)):
+           print(i, a[i])
+
+       for i, x in enumerate(a):
+           print(i, x)
+
+
+--------------------------------------------------------------------------------
+9.2 元组 tuple —— 有序、不可变
+--------------------------------------------------------------------------------
+
+【创建】
+
+       t = (1, 2, 3)
+       t = 1, 2, 3             # 括号可以省略
+       t = ()                  # 空元组
+       t = (1,)                # ★ 单元素元组必须加逗号
+       t = tuple([1, 2, 3])    # 从列表转换
+
+   注意：(1) 是整数，(1,) 才是元组。
+
+【特性】
+
+       t = (1, 2, 3)
+       print(t[0])             # 1        支持索引
+       print(t[1:])            # (2, 3)   支持切片
+       t[0] = 100              # TypeError ★ 不能修改
+
+【为什么用元组】
+
+       1. 更安全（不会被意外修改）
+       2. 可以作为字典的键（列表不行）
+       3. 速度比列表快
+       4. 函数返回多个值时本质就是元组
+
+【解包】
+
+       point = (3, 5)
+       x, y = point
+       print(x, y)             # 3 5
+
+       a, b, *rest = (1, 2, 3, 4)
+       print(rest)             # [3, 4]
+
+【方法】（只有两个）
+
+       t = (1, 2, 2, 3)
+       print(t.count(2))       # 2
+       print(t.index(3))       # 3
+
+
+--------------------------------------------------------------------------------
+9.3 字典 dict —— 键值对，键唯一
+--------------------------------------------------------------------------------
+
+【创建】
+
+       d = {"name": "张三", "age": 20}
+       d = dict(name="张三", age=20)
+       d = dict([("name", "张三"), ("age", 20)])
+       d = {}                          # 空字典
+
+   要点：
+       - 键必须是不可变类型（str、int、tuple），不能是 list
+       - 键唯一，重复赋值会覆盖
+       - Python 3.7+ 保证插入顺序
+
+【查】
+
+       d = {"name": "张三", "age": 20}
+
+       print(d["name"])                # 张三
+       print(d["x"])                   # KeyError ★ 键不存在会报错
+
+       print(d.get("name"))            # 张三
+       print(d.get("x"))               # None      ★ 不报错
+       print(d.get("x", "默认值"))     # 默认值     ★ 给默认值
+
+       print("name" in d)              # True
+       print(d.keys())                 # dict_keys(['name', 'age'])
+       print(d.values())               # dict_values(['张三', 20])
+       print(d.items())                # dict_items([('name','张三'), ('age',20)])
+
+【增 / 改】
+
+       d = {"name": "张三"}
+       d["age"] = 20                   # 键不存在 → 新增
+       d["age"] = 21                   # 键存在   → 修改
+       d.update({"city": "北京"})      # 批量更新
+       d.setdefault("sex", "男")       # 键不存在才设置，已存在则不动
+
+【删】
+
+       d = {"a": 1, "b": 2, "c": 3}
+       d.pop("a")                      # 删除并返回 1
+       d.pop("z", None)                # 不存在时返回默认值，不报错
+       del d["b"]                      # 按下标删除
+       d.clear()                       # 清空
+
+【遍历】
+
+       d = {"a": 1, "b": 2}
+
+       for k in d:                     # 遍历键
+           print(k)
+
+       for k, v in d.items():          # ★ 推荐，同时拿键值
+           print(k, v)
+
+       for v in d.values():            # 遍历值
+           print(v)
+
+【字典推导式】
+
+       squares = {x: x * x for x in range(4)}
+       print(squares)                  # {0: 0, 1: 1, 2: 4, 3: 9}
+
+       # 反转键值
+       inv = {v: k for k, v in squares.items()}
+
+【合并字典】
+
+       a = {"x": 1}
+       b = {"y": 2}
+       c = {**a, **b}                  # {'x': 1, 'y': 2}
+       a.update(b)                     # 原地合并
+
+
+--------------------------------------------------------------------------------
+9.4 集合 set —— 无序、元素唯一
+--------------------------------------------------------------------------------
+
+【创建】
+
+       s = {1, 2, 3}
+       s = set([1, 2, 2, 3])           # 自动去重 → {1, 2, 3}
+       s = set()                       # ★ 空集合只能用 set()，{} 是空字典
+
+【增删】
+
+       s = {1, 2}
+       s.add(3)                        # 加一个
+       s.update([4, 5])                # 加多个
+       s.remove(3)                     # 删除，不存在会报 KeyError
+       s.discard(99)                   # 删除，不存在也不报错
+       s.pop()                         # 随机删除并返回
+       s.clear()                       # 清空
+
+【集合运算】
+
+       a = {1, 2, 3, 4}
+       b = {3, 4, 5, 6}
+
+       print(a | b)                    # 并集 {1,2,3,4,5,6}
+       print(a & b)                    # 交集 {3, 4}
+       print(a - b)                    # 差集 {1, 2}
+       print(a ^ b)                    # 对称差集 {1,2,5,6}
+
+       # 方法写法
+       a.union(b)
+       a.intersection(b)
+       a.difference(b)
+
+       # 判断子集 / 超集
+       print({1, 2}.issubset(a))       # True
+       print(a.issuperset({1, 2}))     # True
+
+【典型用途：去重】
+
+       nums = [1, 1, 2, 3, 3, 3]
+       unique = list(set(nums))        # [1, 2, 3]（顺序不保证）
+
+【不可变集合 frozenset】可作为字典的键
+
+       fs = frozenset([1, 2, 3])
+
+
+--------------------------------------------------------------------------------
+9.5 四大容器对比速查
+--------------------------------------------------------------------------------
+
+   特性           list        tuple       dict          set
+   ------------------------------------------------------------------
+   有序           是          是          是(3.7+)      否
+   可变           是          否          是            是
+   可重复元素     是          是          键不可重复    元素唯一
+   索引访问       是          是          按键访问      否
+   典型场景       序列/队列   固定结构     映射关系      去重/集合运算
+   创建           []          ()          {}            set()
+   占用/性能      较慢        快          快            快
+
+
+================================================================================
+第 10 章  函数
+================================================================================
+
+【10.1 定义与调用】
+
+       def greet(name):
+           """打招呼（这是文档字符串）"""
+           print(f"你好，{name}")
+
+       greet("张三")               # 你好，张三
+
+   语法：def 函数名(参数列表):  + 缩进的函数体
+
+【10.2 返回值 return】
+
+       def add(a, b):
+           return a + b
+
+       result = add(3, 4)          # 7
+
+   要点：
+       - 没有 return，函数默认返回 None
+       - return 可以返回多个值（本质是元组）
+
+       def min_max(nums):
+           return min(nums), max(nums)
+
+       lo, hi = min_max([3, 1, 5])     # 解包接收
+       print(lo, hi)                   # 1 5
+
+       # return 执行后函数立即结束
+       def f(x):
+           if x < 0:
+               return "负数"
+           return "非负"
+
+【10.3 参数类型】
+
+   1) 位置参数：按顺序传
+
+       def f(a, b):
+           return a + b
+       f(1, 2)
+
+   2) 关键字参数：按名字传，顺序无所谓
+
+       f(b=2, a=1)
+
+   3) 默认参数：给默认值，调用时可省略
+
+       def greet(name, msg="你好"):
+           print(msg, name)
+       greet("张三")               # 你好 张三
+       greet("张三", "早上好")     # 早上好 张三
+
+   ★ 陷阱：默认参数不要用可变对象！
+
+       def bad(item, box=[]):      # 错误！[] 只创建一次，会累积
+           box.append(item)
+           return box
+       print(bad(1))               # [1]
+       print(bad(2))               # [1, 2]  ← 不是预期的 [2]
+
+       def good(item, box=None):   # 正确写法
+           if box is None:
+               box = []
+           box.append(item)
+           return box
+
+   4) 可变位置参数 *args：把多余的位置参数打包成元组
+
+       def total(*args):
+           print(args)             # (1, 2, 3)
+           return sum(args)
+       total(1, 2, 3)              # 6
+
+   5) 可变关键字参数 **kwargs：打包成字典
+
+       def show(**kwargs):
+           print(kwargs)           # {'name': '张三', 'age': 20}
+       show(name="张三", age=20)
+
+   6) 组合顺序（必须遵守）：
+       位置参数 → *args → 默认参数 → **kwargs
+
+       def f(a, b, *args, c=1, **kwargs):
+           print(a, b, args, c, kwargs)
+
+   7) 参数解包：调用时用 * / ** 展开
+
+       nums = [1, 2, 3]
+       print(total(*nums))         # 等价 total(1, 2, 3)
+
+       d = {"name": "张三", "age": 20}
+       show(**d)                   # 等价 show(name="张三", age=20)
+
+   8) 仅限关键字参数（* 之后必须用关键字传）
+
+       def f(a, *, b):
+           return a + b
+       f(1, b=2)                   # 正确
+       f(1, 2)                     # TypeError
+
+【10.4 函数是第一类对象】
+
+       可以赋值给变量、当参数、当返回值。
+
+       def add(a, b):
+           return a + b
+
+       op = add                    # 赋值给变量
+       print(op(1, 2))             # 3
+
+       def apply(func, x, y):      # 当参数传
+           return func(x, y)
+       print(apply(add, 3, 4))     # 7
+
+【10.5 lambda 匿名函数】
+
+       格式：lambda 参数: 表达式      （只能写一个表达式，自动 return）
+
+       square = lambda x: x * x
+       print(square(5))            # 25
+
+       add = lambda a, b: a + b
+
+   ★ 常见用途：配合 sort / map / filter
+
+       words = ["banana", "apple", "cherry"]
+       words.sort(key=lambda w: len(w))
+
+       nums = [1, 2, 3, 4]
+       print(list(map(lambda x: x * 2, nums)))         # [2, 4, 6, 8]
+       print(list(filter(lambda x: x % 2 == 0, nums))) # [2, 4]
+
+【10.6 递归】
+
+       函数自己调用自己，必须有终止条件。
+
+       def factorial(n):
+           if n <= 1:
+               return 1
+           return n * factorial(n - 1)
+
+       print(factorial(5))         # 120
+
+
+================================================================================
+第 11 章  作用域与高级函数特性
+================================================================================
+
+【11.1 作用域 LEGB 规则】
+
+   查找顺序：Local（局部）→ Enclosing（嵌套外层）→ Global（全局）→ Built-in（内置）
+
+       x = "全局"
+
+       def outer():
+           x = "外层"
+           def inner():
+               x = "局部"
+               print(x)            # 局部
+           inner()
+
+       outer()
+
+【11.2 global 声明全局变量】
+
+       count = 0
+
+       def inc():
+           global count            # 声明要修改全局变量
+           count += 1
+
+       inc()
+       print(count)                # 1
+
+   注意：只读取全局变量不需要 global，只有赋值修改才需要。
+
+【11.3 nonlocal 修改嵌套外层变量】
+
+       def outer():
+           n = 0
+           def inner():
+               nonlocal n          # 声明修改外层函数的变量
+               n += 1
+               return n
+           return inner()
+
+       print(outer())              # 1
+
+【11.4 闭包】
+
+       内部函数引用了外部函数的变量，且外部函数返回内部函数。
+
+       def counter():
+           n = 0
+           def step():
+               nonlocal n
+               n += 1
+               return n
+           return step
+
+       c = counter()
+       print(c(), c(), c())        # 1 2 3
+
+【11.5 装饰器（了解）】
+
+       本质是"接收函数、返回新函数"的高阶函数。
+
+       def log(func):
+           def wrapper(*args, **kwargs):
+               print(f"调用 {func.__name__}")
+               return func(*args, **kwargs)
+           return wrapper
+
+       @log                          # 语法糖：等价于 f = log(f)
+       def add(a, b):
+           return a + b
+
+       print(add(1, 2))
+       # 输出：调用 add
+       #       3
+
+【11.6 迭代器与生成器】
+
+   # 生成器：用 yield 返回，惰性求值，省内存
+       def count_up(n):
+           i = 0
+           while i < n:
+               yield i             # 每调用一次 next() 才走到这里
+               i += 1
+
+       for x in count_up(3):
+           print(x)                # 0 1 2
+
+   # 生成器表达式（把列表推导式的 [] 换成 ()）
+       gen = (x * x for x in range(5))
+       print(next(gen))            # 0
+       print(sum(gen))             # 30（剩余 1+4+9+16）
+
+【11.7 解包与星号】
+
+       a, *b, c = [1, 2, 3, 4, 5]
+       print(a, b, c)              # 1 [2, 3, 4] 5
+
+
+================================================================================
+第 12 章  异常处理
+================================================================================
+
+【12.1 基本结构】
+
+       try:
+           可能出错的代码
+       except 异常类型:
+           出错后的处理
+       else:
+           没出错时执行（可选）
+       finally:
+           无论是否出错都执行（可选）
+
+【12.2 完整示例】
+
+       try:
+           num = int(input("请输入数字："))
+           result = 10 / num
+       except ValueError:
+           print("输入的不是合法数字")
+       except ZeroDivisionError:
+           print("除数不能为 0")
+       except Exception as e:
+           print(f"其他错误：{e}")
+       else:
+           print(f"结果是 {result}")
+       finally:
+           print("处理结束")
+
+【12.3 常见异常类型】
+
+       ValueError          值不合法         int("abc")
+       TypeError           类型错误         1 + "a"
+       KeyError            字典键不存在     d["不存在的键"]
+       IndexError          索引越界         [1,2][5]
+       ZeroDivisionError   除零             1 / 0
+       FileNotFoundError   文件不存在       open("不存在.txt")
+       AttributeError      属性不存在       "abc".xxx()
+       ImportError         导入失败         import 不存在的模块
+       NameError           变量未定义       print(未定义变量)
+       IndentationError    缩进错误
+
+【12.4 一次捕获多个】
+
+       try:
+           x = int("abc")
+       except (ValueError, TypeError) as e:
+           print(f"出错了：{e}")
+
+【12.5 捕获所有异常】
+
+       try:
+           do_something()
+       except Exception as e:      # 兜底，不推荐滥用
+           print(f"未知错误：{e}")
+
+   注意：不要用裸的 except:（会连 Ctrl+C 都吞掉）。
+
+【12.6 主动抛异常 raise】
+
+       def set_age(age):
+           if age < 0:
+               raise ValueError("年龄不能为负")
+           return age
+
+       try:
+           set_age(-1)
+       except ValueError as e:
+           print(e)                # 年龄不能为负
+
+【12.7 自定义异常】
+
+       class MyError(Exception):
+           pass
+
+       raise MyError("自定义错误")
+
+【12.8 assert 断言】用于调试，条件为假就抛 AssertionError
+
+       x = 5
+       assert x > 0, "x 必须为正数"
+
+   注意：python -O 运行时断言会被跳过，不要用它做正式校验。
+
+
+================================================================================
+第 13 章  文件操作
+================================================================================
+
+【13.1 打开模式】
+
+       "r"     只读（默认），文件必须存在
+       "w"     只写，会清空原内容，不存在则创建
+       "a"     追加，在尾部添加，不覆盖
+       "x"     独占创建，文件已存在则报错
+       "b"     二进制模式（如 "rb"、"wb"）
+       "t"     文本模式（默认）
+       "+"     读写（如 "r+"）
+
+【13.2 读取文件（★ 推荐用 with）】
+
+       # with 会自动关闭文件，即使中途出错
+       with open("test.txt", "r", encoding="utf-8") as f:
+           content = f.read()          # 读全部内容为一个字符串
+           print(content)
+
+   # 逐行读取（大文件推荐，省内存）
+       with open("test.txt", "r", encoding="utf-8") as f:
+           for line in f:
+               print(line.rstrip())    # rstrip 去掉行尾换行符
+
+   # 读所有行到列表
+       with open("test.txt", "r", encoding="utf-8") as f:
+           lines = f.readlines()       # ['第一行\n', '第二行\n']
+
+   # 读一行
+       with open("test.txt", "r", encoding="utf-8") as f:
+           first = f.readline()
+
+   ★ 中文务必加 encoding="utf-8"，否则 Windows 上容易乱码。
+
+【13.3 写入文件】
+
+       # 覆盖写入
+       with open("out.txt", "w", encoding="utf-8") as f:
+           f.write("第一行\n")
+           f.write("第二行\n")
+           f.writelines(["第三行\n", "第四行\n"])
+
+       # 追加写入
+       with open("out.txt", "a", encoding="utf-8") as f:
+           f.write("追加的内容\n")
+
+   注意：write() 不会自动加换行，需要手动写 \n。
+
+【13.4 读写二进制】
+
+       with open("img.png", "rb") as f:
+           data = f.read()             # bytes
+
+       with open("copy.png", "wb") as f:
+           f.write(data)
+
+【13.5 异常安全写法】
+
+       try:
+           with open("test.txt", "r", encoding="utf-8") as f:
+               print(f.read())
+       except FileNotFoundError:
+           print("文件不存在")
+       except PermissionError:
+           print("没有权限")
+
+【13.6 路径处理】
+
+       import os
+       print(os.getcwd())                          # 当前工作目录
+       print(os.path.exists("test.txt"))           # 是否存在
+       print(os.path.join("dir", "file.txt"))      # 跨平台拼路径
+
+       # pathlib（更现代，推荐）
+       from pathlib import Path
+       p = Path("data") / "test.txt"
+       print(p.exists())
+       print(p.suffix)                             # .txt
+       print(p.stem)                               # test
+       content = p.read_text(encoding="utf-8")
+       p.write_text("内容", encoding="utf-8")
+
+【13.7 文件指针】
+
+       with open("test.txt", "r", encoding="utf-8") as f:
+           print(f.read(5))            # 读 5 个字符
+           f.seek(0)                   # 回到开头
+           print(f.read(5))            # 再读 5 个
+
+
+================================================================================
+第 14 章  模块与包
+================================================================================
+
+【14.1 导入的几种写法】
+
+       import math                     # 导入整个模块
+       print(math.sqrt(16))            # 用 模块名.函数 调用
+
+       from math import sqrt           # 导入特定函数
+       print(sqrt(16))                 # 直接用函数名
+
+       from math import sqrt, pi       # 导入多个
+       from math import *              # 导入全部（不推荐，易命名冲突）
+
+       import numpy as np              # 起别名（约定俗成）
+       from math import sqrt as sq
+
+【14.2 自建模块】
+
+       # 文件 mymath.py
+       def add(a, b):
+           return a + b
+
+       PI = 3.14
+
+       # 另一个文件（同目录）
+       import mymath
+       print(mymath.add(1, 2))
+       print(mymath.PI)
+
+【14.3 __name__ == "__main__"】
+
+       作用：让模块既能被导入，又能直接运行。
+
+       # mymath.py
+       def add(a, b):
+           return a + b
+
+       if __name__ == "__main__":
+           # 只有直接运行这个文件时才执行
+           print(add(1, 2))
+
+   说明：
+       - 直接运行 python mymath.py → __name__ 是 "__main__"，会执行
+       - 被 import 时 → __name__ 是 "mymath"，不执行
+
+【14.4 标准库常用模块】
+
+       import math
+       math.sqrt(16)       # 4.0
+       math.pi             # 3.141592653589793
+       math.floor(3.7)     # 3
+       math.ceil(3.2)      # 4
+       math.pow(2, 3)      # 8.0
+
+       import random
+       random.random()                 # [0,1) 随机浮点
+       random.randint(1, 10)           # [1,10] 随机整数
+       random.choice(["a", "b"])       # 随机选一个
+       random.shuffle([1, 2, 3])       # 原地打乱
+       random.sample(range(100), 5)    # 不重复抽 5 个
+
+       import os
+       os.getcwd()                     # 当前目录
+       os.listdir(".")                 # 列出目录内容
+       os.makedirs("a/b", exist_ok=True)   # 递归创建目录
+
+       import sys
+       sys.version                     # Python 版本
+       sys.argv                        # 命令行参数
+       sys.exit(0)                     # 退出程序
+
+       from datetime import datetime, timedelta
+       now = datetime.now()
+       print(now.strftime("%Y-%m-%d %H:%M:%S"))
+       print(now + timedelta(days=1))  # 明天
+
+       import json
+       json.dumps({"a": 1})            # 字典 → JSON 字符串
+       json.loads('{"a": 1}')          # JSON 字符串 → 字典
+
+       import re
+       re.findall(r"\d+", "a1b22")     # ['1', '22']
+       re.sub(r"\d", "*", "a1b2")      # 'a*b*'
+
+       from collections import Counter, defaultdict
+       Counter("hello")                # Counter({'l': 2, 'h': 1, ...})
+       d = defaultdict(list)           # 键不存在时自动创建空列表
+
+【14.5 包（package）】
+
+       包 = 含 __init__.py 的目录，用来组织多个模块。
+
+       mypackage/
+       ├── __init__.py
+       ├── module1.py
+       └── module2.py
+
+       from mypackage import module1
+       from mypackage.module2 import some_func
+
+【14.6 第三方库安装】
+
+       pip install requests
+       pip install requests==2.31.0    # 指定版本
+       pip list                        # 查看已安装
+       pip freeze > requirements.txt   # 导出依赖
+       pip install -r requirements.txt # 按清单安装
+
+   建议用虚拟环境隔离：
+
+       python -m venv venv
+       venv\Scripts\activate           # Windows 激活
+       source venv/bin/activate        # macOS/Linux 激活
+
+
+================================================================================
+第 15 章  面向对象基础
+================================================================================
+
+【15.1 定义类与创建对象】
+
+       class Dog:
+           def __init__(self, name, age):
+               self.name = name            # 实例属性
+               self.age = age
+
+           def bark(self):
+               print(f"{self.name} 汪汪叫")
+
+       d = Dog("旺财", 3)                  # 创建实例
+       d.bark()                            # 旺财 汪汪叫
+       print(d.name)                       # 旺财
+
+   要点：
+       - __init__ 是构造方法，创建对象时自动调用
+       - self 代表实例本身，必须是第一个参数（调用时不用传）
+       - 类名用 PascalCase
+
+【15.2 属性与方法的访问】
+
+       d.age = 4                           # 修改属性
+       print(d.age)
+       del d.age                           # 删除属性
+
+【15.3 类属性 vs 实例属性】
+
+       class Dog:
+           species = "犬科"                # 类属性：所有实例共享
+
+           def __init__(self, name):
+               self.name = name            # 实例属性：每个实例独有
+
+       print(Dog.species)                  # 犬科
+       print(Dog("旺财").species)          # 犬科
+
+【15.4 继承】
+
+       class Animal:
+           def __init__(self, name):
+               self.name = name
+
+           def speak(self):
+               print("发出声音")
+
+       class Cat(Animal):                  # 继承 Animal
+           def speak(self):                # 重写父类方法
+               print(f"{self.name} 喵喵叫")
+
+       c = Cat("咪咪")
+       c.speak()                           # 咪咪 喵喵叫
+
+   # 调用父类方法
+       class Cat(Animal):
+           def speak(self):
+               super().speak()             # 调用父类实现
+               print("喵喵叫")
+
+   # 多重继承
+       class A:
+           pass
+       class B:
+           pass
+       class C(A, B):
+           pass
+
+【15.5 魔术方法（常用）】
+
+       class Point:
+           def __init__(self, x, y):
+               self.x = x
+               self.y = y
+
+           def __str__(self):              # print(obj) 时显示
+               return f"Point({self.x}, {self.y})"
+
+           def __repr__(self):             # 调试显示
+               return f"Point({self.x}, {self.y})"
+
+           def __eq__(self, other):        # obj1 == obj2
+               return self.x == other.x and self.y == other.y
+
+           def __len__(self):              # len(obj)
+               return 2
+
+       p = Point(1, 2)
+       print(p)                            # Point(1, 2)
+
+【15.6 封装与私有属性】
+
+       class Account:
+           def __init__(self, balance):
+               self.__balance = balance     # 双下划线：私有属性
+
+           def get_balance(self):
+               return self.__balance
+
+   # 直接访问会失败：
+       a = Account(100)
+       print(a.__balance)                  # AttributeError
+
+       # 实际是名称修饰成 _Account__balance，仍可强行访问（不推荐）
+       print(a._Account__balance)
+
+【15.7 @property 把方法当属性用】
+
+       class Circle:
+           def __init__(self, r):
+               self._r = r
+
+           @property
+           def area(self):                  # 读取：c.area（不加括号）
+               return 3.14 * self._r ** 2
+
+           @area.setter
+           def area(self, value):           # 赋值拦截
+               raise AttributeError("面积只读")
+
+       c = Circle(2)
+       print(c.area)                        # 12.56
+
+【15.8 静态方法与类方法】
+
+       class MathUtil:
+           @staticmethod
+           def add(a, b):                   # 静态方法：不需要 self/cls
+               return a + b
+
+           @classmethod
+           def create(cls):                 # 类方法：第一个参数是类
+               return cls()
+
+       print(MathUtil.add(1, 2))            # 3
+
+
+================================================================================
+第 16 章  常用内置函数速查
+================================================================================
+
+【16.1 类型与转换】
+   type(x)            查看类型
+   isinstance(x, T)   判断类型
+   int(x) / float(x) / str(x) / bool(x)      类型转换
+   list(x) / tuple(x) / set(x) / dict(x)     容器转换
+
+【16.2 数值计算】
+   abs(-5)            绝对值 → 5
+   round(3.14159, 2)  四舍五入 → 3.14
+   pow(2, 3)          幂 → 8
+   divmod(7, 2)       返回 (商, 余) → (3, 1)
+   sum([1,2,3])       求和 → 6
+   max(1,2,3)         最大值 → 3
+   min([1,2,3])       最小值 → 1
+
+【16.3 序列操作】
+   len(x)             长度
+   sorted(x)          返回排序后的新列表
+   reversed(x)        反转迭代器
+   enumerate(x)       带下标遍历
+   zip(a, b)          并行遍历
+   range(n)           数字序列
+   any([...])         有一个为真就返回 True
+   all([...])         全部为真才返回 True
+   map(f, x)          对每个元素应用 f
+   filter(f, x)       过滤元素
+
+   示例：
+       print(any([0, 0, 1]))           # True
+       print(all([1, 1, 1]))           # True
+       print(all([1, 0, 1]))           # False
+
+【16.4 输入输出】
+   print(x)           输出
+   input(prompt)      输入（返回 str）
+   open(path, mode)   打开文件
+
+【16.5 其他常用】
+   id(x)              对象内存地址
+   help(x)            查看帮助文档
+   dir(x)             查看所有属性和方法
+   hash(x)            哈希值
+   callable(x)        是否可调用
+
+【16.6 实战示例】
+
+       nums = [3, 1, 4, 1, 5, 9, 2, 6]
+
+       print(len(nums))                        # 8
+       print(sum(nums))                        # 31
+       print(max(nums), min(nums))             # 9 1
+       print(sorted(nums))                     # [1,1,2,3,4,5,6,9]
+       print(sorted(nums, reverse=True))       # [9,6,5,4,3,2,1,1]
+
+       # 统计各元素出现次数
+       from collections import Counter
+       print(Counter(nums))                    # Counter({1: 2, 3: 1, ...})
+
+
+================================================================================
+第 17 章  常见易错点
+================================================================================
+
+【17.1 可变默认参数】
+
+       def f(box=[]):              # ✗ 错误：所有调用共享同一个列表
+           box.append(1)
+           return box
+
+       def f(box=None):            # ✓ 正确
+           if box is None:
+               box = []
+           box.append(1)
+           return box
+
+【17.2 列表赋值是引用】
+
+       a = [1, 2, 3]
+       b = a                       # ✗ b 和 a 指向同一个列表
+       b.append(4)
+       print(a)                    # [1, 2, 3, 4]  a 也被改了
+
+       import copy
+       b = copy.deepcopy(a)        # ✓ 深拷贝，完全独立
+
+【17.3 循环中删除元素】
+
+       nums = [1, 2, 2, 3]
+       for x in nums:              # ✗ 边遍历边删，会漏掉元素
+           if x == 2:
+               nums.remove(x)
+
+       nums = [x for x in nums if x != 2]      # ✓ 用推导式重建
+       nums = [1, 2, 2, 3]
+       for x in nums[:]:                       # ✓ 或遍历副本
+           if x == 2:
+               nums.remove(x)
+
+【17.4 == 和 is 混用】
+
+       a = [1, 2]
+       b = [1, 2]
+       print(a == b)               # True   值相等
+       print(a is b)               # False  不是同一对象
+
+       x = None
+       print(x is None)            # ✓ 判断 None 用 is
+       print(x == None)            # ✗ 不推荐
+
+【17.5 浮点数比较】
+
+       print(0.1 + 0.2 == 0.3)     # ✗ False
+
+       import math
+       print(math.isclose(0.1 + 0.2, 0.3))     # ✓ True
+
+【17.6 忘记更新循环变量】
+
+       i = 0
+       while i < 5:
+           print(i)                # ✗ 死循环，没写 i += 1
+
+【17.7 字符串不可变】
+
+       s = "hello"
+       s[0] = "H"                  # ✗ TypeError
+       s = "H" + s[1:]             # ✓ 新建字符串
+
+【17.8 整数除法与浮点除法】
+
+       print(7 / 2)                # 3.5  ← 除法总是浮点
+       print(7 // 2)               # 3    ← 整除
+       print(-7 // 2)              # -4   ← 向下取整，不是 -3
+
+【17.9 元组单元素少写逗号】
+
+       t = (1)                     # ✗ 这是整数 1
+       t = (1,)                    # ✓ 这才是元组
+
+【17.10 空集合写成 {}】
+
+       s = {}                      # ✗ 这是空字典
+       s = set()                   # ✓ 空集合
+
+【17.11 中文文件未指定编码】
+
+       open("a.txt")               # ✗ Windows 默认 GBK，易乱码
+       open("a.txt", encoding="utf-8")     # ✓ 显式指定
+
+【17.12 忘记关闭文件】
+
+       f = open("a.txt")
+       f.read()                    # ✗ 忘记 f.close()，可能泄漏
+
+       with open("a.txt") as f:    # ✓ with 自动关闭
+           f.read()
+
+【17.13 缩进混用 Tab 和空格】
+
+       统一用 4 个空格，不要混用，否则报 TabError。
+
+【17.14 修改字典时遍历】
+
+       d = {"a": 1, "b": 2}
+       for k in d:
+           del d[k]                # ✗ RuntimeError: dictionary changed size
+
+       for k in list(d.keys()):    # ✓ 遍历键的副本
+           del d[k]
+
+
+================================================================================
+第 18 章  编码规范（PEP 8 要点）
+================================================================================
+
+【18.1 缩进】用 4 个空格，不要用 Tab
+
+【18.2 行长度】每行不超过 79 个字符（团队可放宽到 100/120）
+
+【18.3 空行】
+       - 顶层函数和类之间：空 2 行
+       - 类内方法之间：空 1 行
+
+【18.4 空格】
+       ✓ 正确：
+           x = 1
+           y = x + 1
+           def f(a, b):
+           d = {"a": 1}
+           nums[1: 3]
+
+       ✗ 错误：
+           x=1
+           y = x+1
+           def f( a, b ):
+           d = { "a":1 }
+
+【18.5 命名】
+       变量、函数     snake_case       user_name, get_data
+       常量           UPPER_CASE       MAX_SIZE
+       类             PascalCase       StudentInfo
+       模块/包        lowercase        mymodule
+       私有           _leading         _internal
+
+【18.6 导入顺序】
+       1) 标准库
+       2) 第三方库
+       3) 本地模块
+       各组之间空一行，禁止 from x import *
+
+       import os
+       import sys
+
+       import requests
+
+       from mypackage import mymodule
+
+【18.7 注释与文档字符串】
+       - 注释要说明"为什么"，而不是"是什么"
+       - 公共函数写上 docstring
+
+       def add(a, b):
+           """返回两数之和。
+
+           Args:
+               a: 第一个数
+               b: 第二个数
+           Returns:
+               两数之和
+           """
+           return a + b
+
+【18.8 推荐工具】
+       black           自动格式化
+       flake8 / ruff   静态检查
+       isort           导入排序
+       mypy            类型检查
+
+【18.9 类型注解（可选，推荐）】
+
+       def add(a: int, b: int) -> int:
+           return a + b
+
+       name: str = "Alice"
+       nums: list[int] = [1, 2, 3]
+       d: dict[str, int] = {"a": 1}
+
+
+================================================================================
+                                学习建议
+================================================================================
+
+1. 先跑通，再理解。把本文件的每段示例直接复制到解释器里执行一遍。
+2. 掌握顺序推荐：
+   变量与类型 → 流程控制 → 列表字典 → 函数 → 文件操作 → 面向对象
+3. 每天写一点代码，比只看不写有效 10 倍。
+4. 遇到报错先看最后一行的异常类型和位置，再往上读调用栈。
+5. 善用 help(函数名) 和 dir(对象)，比搜索引擎更快。
+6. 熟练后学习：
+
+   - 列表/字典推导式、生成器
+   - 装饰器与闭包
+   - 虚拟环境与 pip
+   - 常用第三方库：requests、pandas、numpy
+   - 测试：pytest
+   - 类型注解与 mypy
+
+7. 推荐练习平台：LeetCode、CodeWars、牛客网
+8. 推荐文档：https://docs.python.org/zh-cn/3/
+
+================================================================================
+                       文件结束 —— 祝学习顺利
+================================================================================
