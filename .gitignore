@@ -5,4 +5,4 @@ __pycache__/
 .env.*
 !.env.example
 .pytest_cache/
-data/chroma_db/
+chroma_db/
